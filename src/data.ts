@@ -15,14 +15,14 @@ export type Song = { id: number; title: string; artist: string; note: string }
 
 /** itunes track ids. previews + artwork are fetched from the itunes lookup api at runtime. */
 export const SONGS: Song[] = [
-  { id: 1442447970, title: 'nightcall', artist: 'kavinsky', note: 'driving at night, windows down' },
-  { id: 1146195725, title: 'white ferrari', artist: 'frank ocean', note: "from blonde" },
-  { id: 1434544967, title: 'tokyo drift', artist: 'teriyaki boyz', note: 'from the tokyo drift soundtrack' },
-  { id: 347480516, title: 'a real hero', artist: 'college & electric youth', note: 'from the drive soundtrack' },
-  { id: 1771719595, title: 'redbone', artist: 'childish gambino', note: 'from awaken, my love!' },
-  { id: 617154366, title: 'get lucky', artist: 'daft punk', note: 'from random access memories' },
-  { id: 1440891171, title: 'mr. brightside', artist: 'the killers', note: 'from hot fuss' },
-  { id: 1786000124, title: 'gasolina', artist: 'daddy yankee', note: 'from barrio fino' },
+  { id: 1440895185, title: 'tired of being alone', artist: 'al green', note: 'from the hi records singles collection' },
+  { id: 193372409, title: "it's been awhile", artist: 'staind', note: 'from break the cycle' },
+  { id: 1440843451, title: 'take a look around', artist: 'limp bizkit', note: 'from chocolate starfish and the hot dog flavored water' },
+  { id: 214475478, title: 'how you remind me', artist: 'nickelback', note: 'from silver side up' },
+  { id: 1015739710, title: 'old man', artist: 'neil young', note: 'from harvest' },
+  { id: 1440828966, title: 'in da club', artist: '50 cent', note: "from 20 #1's: modern hip-hop" },
+  { id: 269843061, title: "da mystery of chessboxin'", artist: 'wu-tang clan', note: 'from enter the wu-tang (36 chambers)' },
+  { id: 425465318, title: 'even flow', artist: 'pearl jam', note: 'from ten' },
 ]
 
 export type Movie = { yt: string; title: string; year: number; scene: string; why: string; color: string }
