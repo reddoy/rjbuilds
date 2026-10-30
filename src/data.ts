@@ -1,16 +1,42 @@
-export type GearId = 'N' | '1' | '2' | '3' | '4' | '5' | 'R'
+/** page sections in scroll order. each one is a gear: scrolling down shifts up. */
+export const SECTIONS = [
+  { id: 'top', gear: 'n', label: 'home' },
+  { id: 'about', gear: '1', label: 'about' },
+  { id: 'builds', gear: '2', label: 'builds' },
+  { id: 'business', gear: '3', label: 'business' },
+  { id: 'music', gear: '4', label: 'music' },
+  { id: 'movies', gear: '5', label: 'movies' },
+  { id: 'contact', gear: '6', label: 'contact' },
+] as const
 
-export const GEARS: { id: GearId; name: string; blurb: string }[] = [
-  { id: 'N', name: 'neutral', blurb: 'home' },
-  { id: '1', name: 'spec sheet', blurb: 'who is this guy' },
-  { id: '2', name: 'the garage', blurb: 'stuff i built' },
-  { id: '3', name: 'pit wall', blurb: 'business' },
-  { id: '4', name: 'the dyno', blurb: 'questionable stats' },
-  { id: '5', name: 'pit radio', blurb: 'say hi' },
-  { id: 'R', name: 'reverse', blurb: 'changelog' },
+export type SectionId = (typeof SECTIONS)[number]['id']
+
+export type Song = { id: number; title: string; artist: string; note: string }
+
+/** itunes track ids. previews + artwork are fetched from the itunes lookup api at runtime. */
+export const SONGS: Song[] = [
+  { id: 1442447970, title: 'nightcall', artist: 'kavinsky', note: 'driving at night, windows down' },
+  { id: 1146195725, title: 'white ferrari', artist: 'frank ocean', note: "it's literally about a car" },
+  { id: 1434544967, title: 'tokyo drift', artist: 'teriyaki boyz', note: 'mandatory. sorry.' },
+  { id: 347480516, title: 'a real hero', artist: 'college & electric youth', note: 'the drive soundtrack, again' },
+  { id: 1771719595, title: 'redbone', artist: 'childish gambino', note: 'stay woke' },
+  { id: 617154366, title: 'get lucky', artist: 'daft punk', note: 'robots making music. respect.' },
+  { id: 1440891171, title: 'mr. brightside', artist: 'the killers', note: 'you know every word too' },
+  { id: 1786000124, title: 'gasolina', artist: 'daddy yankee', note: 'fuel. for the soul.' },
 ]
 
-export const GEAR_ORDER: GearId[] = ['R', 'N', '1', '2', '3', '4', '5']
+export type Movie = { yt: string; title: string; year: number; scene: string; why: string; color: string }
+
+export const MOVIES: Movie[] = [
+  { yt: 'hq8YD7-Aimw', title: 'bullitt', year: 1968, scene: 'the car chase', why: 'the og. no cgi, just a mustang and hills.', color: '#3d5a3a' },
+  { yt: 'N3Zp516JkmU', title: 'ford v ferrari', year: 2019, scene: '7000 rpm', why: 'there\'s a point at 7000 rpm where everything fades.', color: '#c8102e' },
+  { yt: 'bibRSt0Ajqk', title: 'drive', year: 2011, scene: 'the getaway', why: 'quietest car chase ever. somehow the most intense.', color: '#ff4fa3' },
+  { yt: 'k5fJmkv02is', title: 'the social network', year: 2010, scene: 'a billion dollars', why: 'code + business + drama. basically my whole personality.', color: '#1f3b73' },
+  { yt: '6A4J4Kg4E60', title: 'baby driver', year: 2017, scene: 'the opening heist', why: 'a getaway synced to a playlist. peak.', color: '#e8b400' },
+  { yt: 'WtnTZSJndPc', title: 'the fast and the furious', year: 2001, scene: '10 seconds or less', why: 'i owe you a ten second car.', color: '#ff6a00' },
+  { yt: '9UspZGJ-TrI', title: 'the wolf of wall street', year: 2013, scene: 'sell me this pen', why: 'the best sales lesson ever filmed.', color: '#0f7b5f' },
+  { yt: '4XA73ni9eVs', title: 'rush', year: 2013, scene: 'trailer', why: 'hunt vs. lauda. rivalry is the best fuel.', color: '#d9d2c3' },
+]
 
 export const CONTACT = {
   email: 'rohanomalley@gmail.com',
@@ -131,23 +157,6 @@ export const VENTURES: Venture[] = [
     status: 'loading',
     gap: 'soon™',
   },
-]
-
-export const CHANGELOG: { v: string; msg: string; type: 'feat' | 'fix' | 'refactor' | 'chore' | 'revert' | 'wip' }[] = [
-  { v: 'v9.9.9', type: 'wip', msg: 'whatever i start next (probably at 2am)' },
-  { v: 'v9.0.0', type: 'feat', msg: 'shipped rjbuilds. you are here.' },
-  { v: 'v8.2.0', type: 'feat', msg: 'cool hand studios: short-form video for local businesses' },
-  { v: 'v8.1.0', type: 'feat', msg: 'loudmouth graphics: tees that talk too much (like me)' },
-  { v: 'v8.0.0', type: 'feat', msg: 'touch grass: made screen time a competition' },
-  { v: 'v7.3.0', type: 'feat', msg: 'cars & bids questions: archived every question from the pod' },
-  { v: 'v7.2.0', type: 'feat', msg: 'age guess: a game about how old famous people looked' },
-  { v: 'v7.0.1', type: 'revert', msg: 'auro. it failed. we burned out. learned a ton.' },
-  { v: 'v7.0.0', type: 'feat', msg: 'auro: launched a real marketplace with real payments' },
-  { v: 'v5.0.0', type: 'feat', msg: 'linkedly: 3 months, mostly by hand, in college (2023)' },
-  { v: 'v3.1.4', type: 'fix', msg: 'learned that "just one more feature" is a lie' },
-  { v: 'v2.0.0', type: 'refactor', msg: 'rohan → rj. same engine, better badge.' },
-  { v: 'v1.0.0', type: 'feat', msg: 'got into cars. never recovered.' },
-  { v: 'v0.0.1', type: 'chore', msg: 'initial commit: rohan o\'malley' },
 ]
 
 export const DISTRACTIONS: string[] = [

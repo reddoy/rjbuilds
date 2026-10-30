@@ -1,11 +1,11 @@
 import { motion } from 'motion/react'
 import { useMemo, useState } from 'react'
 import { CONTACT } from '../data'
-import { SectionHead } from './SectionHead'
+import { Section, SectionHead } from './SectionHead'
 
 const BARS = 48
 
-export function Radio() {
+export function Contact() {
   const [msg, setMsg] = useState('')
   const [copied, setCopied] = useState(false)
   const bars = useMemo(
@@ -30,8 +30,8 @@ export function Radio() {
   }
 
   return (
-    <div className="panel radio">
-      <SectionHead gear="5" title="pit radio" sub="box, box. let's talk: projects, cars, ideas, whatever." />
+    <Section id="contact">
+      <SectionHead gear="6" title="contact" sub="pit radio. box, box. let's talk: projects, cars, ideas, whatever." />
 
       <div className="wave" aria-hidden>
         {bars.map((b, i) => (
@@ -71,6 +71,6 @@ export function Radio() {
           </button>
         </form>
       </div>
-    </div>
+    </Section>
   )
 }

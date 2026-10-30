@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import { BUILDS, type Build } from '../data'
-import { SectionHead } from './SectionHead'
+import { Section, SectionHead, inView } from './SectionHead'
 
 function BuildCard({ b, i }: { b: Build; i: number }) {
   const px = useMotionValue(0)
@@ -13,7 +13,8 @@ function BuildCard({ b, i }: { b: Build; i: number }) {
     <motion.article
       className={`build ${blown ? 'blown' : ''}`}
       initial={{ opacity: 0, y: 60, rotate: i % 2 ? 3 : -3 }}
-      animate={{ opacity: 1, y: 0, rotate: 0 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={inView}
       transition={{ delay: 0.15 + i * 0.07, type: 'spring', stiffness: 140, damping: 16 }}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       onPointerMove={(e) => {
@@ -53,15 +54,15 @@ function BuildCard({ b, i }: { b: Build; i: number }) {
   )
 }
 
-export function Garage() {
+export function Builds() {
   return (
-    <div className="panel garage">
-      <SectionHead gear="2" title="the garage" sub={`${BUILDS.length} builds. 1 blown engine. zero regrets (several regrets).`} />
+    <Section id="builds">
+      <SectionHead gear="2" title="builds" sub={`${BUILDS.length} builds. 1 blown engine. zero regrets (several regrets).`} />
       <div className="build-grid">
         {BUILDS.map((b, i) => (
           <BuildCard key={b.name} b={b} i={i} />
         ))}
       </div>
-    </div>
+    </Section>
   )
 }

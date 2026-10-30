@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { VENTURES } from '../data'
-import { SectionHead } from './SectionHead'
+import { Section, SectionHead, inView } from './SectionHead'
 
 const RACE_CONTROL = [
   'rj given a 5 second penalty for starting another project mid-race',
@@ -10,10 +10,10 @@ const RACE_CONTROL = [
   'drs enabled: caffeine detection zone',
 ]
 
-export function PitWall() {
+export function Business() {
   return (
-    <div className="panel pitwall">
-      <SectionHead gear="3" title="pit wall" sub="the business side. live timing, honest results." />
+    <Section id="business">
+      <SectionHead gear="3" title="business" sub="the pit wall. live timing, honest results." />
 
       <div className="timing">
         <div className="timing-head mono">
@@ -45,7 +45,8 @@ export function PitWall() {
             <motion.div
               key={v.name}
               initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={inView}
               transition={{ delay: 0.2 + i * 0.08, type: 'spring', stiffness: 200, damping: 20 }}
             >
               {v.link ? (
@@ -70,6 +71,6 @@ export function PitWall() {
           </div>
         </div>
       </div>
-    </div>
+    </Section>
   )
 }

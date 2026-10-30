@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { BUILDS, CONTACT, GEARS, type GearId } from '../data'
+import { BUILDS, CONTACT, MOVIES, SECTIONS, SONGS } from '../data'
 import { blip, isSoundOn, setSound } from '../lib/engine'
 
 type Line = { kind: 'in' | 'out' | 'err'; text: ReactNode }
@@ -16,7 +16,9 @@ const JOKES = [
 const HELP = [
   'help            this',
   'ls              list sections',
-  'cd <section>    shift there (try: cd garage, cd 3, cd r)',
+  'cd <section>    go there (try: cd music, cd 3)',
+  'movies          on the shelf',
+  'music           on rotation',
   'whoami          who is this',
   'builds          what i made',
   'vroom           toggle engine sound',
@@ -27,15 +29,11 @@ const HELP = [
   'clear / exit',
 ]
 
-export function Terminal({
-  onClose,
-  onShift,
-  onDistract,
-}: {
-  onClose: () => void
-  onShift: (g: GearId) => void
-  onDistract: () => void
-}) {
+function goTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistract: () => void }) {
   const [lines, setLines] = useState<Line[]>([
     { kind: 'out', text: 'rjOS garage shell v9.0 — type "help". esc to close.' },
   ])
@@ -67,18 +65,18 @@ export function Terminal({
         HELP.forEach((h) => say(h))
         break
       case 'ls':
-        GEARS.forEach((g) => say(`[${g.id.toLowerCase()}]  ${g.name.padEnd(12)} ${g.blurb}`))
+        SECTIONS.forEach((s) => say(`[${s.gear}]  ${s.label}`))
         break
       case 'cd': {
-        const target = GEARS.find(
-          (g) => g.id.toLowerCase() === arg || g.name === arg || g.name.replace(/^the /, '') === arg || g.blurb === arg,
-        )
-        if (!arg || arg === '~' || arg === 'home') {
-          onShift('N')
-          say('back to neutral.')
+        const target = SECTIONS.find((s) => s.gear === arg || s.label === arg || s.id === arg)
+        if (!arg || arg === '~') {
+          goTo('top')
+          onClose()
+          return
         } else if (target) {
-          onShift(target.id)
-          say(`shifting into ${target.id.toLowerCase()} → ${target.name}`)
+          goTo(target.id)
+          onClose()
+          return
         } else say(`cd: no such section: ${arg}. try "ls"`, 'err')
         break
       }
@@ -88,6 +86,12 @@ export function Terminal({
         break
       case 'builds':
         BUILDS.forEach((b) => say(`- ${b.name.padEnd(22)} ${b.status}`))
+        break
+      case 'movies':
+        MOVIES.forEach((m) => say(`- ${m.title} (${m.year}): ${m.scene}`))
+        break
+      case 'music':
+        SONGS.forEach((m) => say(`- ${m.title} — ${m.artist}`))
         break
       case 'vroom':
         setSound(!isSoundOn())

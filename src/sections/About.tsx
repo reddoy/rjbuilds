@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { SPEC } from '../data'
-import { SectionHead } from './SectionHead'
+import { Section, SectionHead, inView } from './SectionHead'
 
 const EQUIPMENT = [
   'turbocharged curiosity',
@@ -17,15 +17,16 @@ const OPTIONS: [string, boolean][] = [
   ['heated opinions about cars', true],
 ]
 
-export function Spec() {
+export function About() {
   return (
-    <div className="panel spec">
-      <SectionHead gear="1" title="spec sheet" sub="the window sticker. read it before you test drive." />
+    <Section id="about">
+      <SectionHead gear="1" title="about" sub="the window sticker. read it before you test drive." />
       <div className="spec-grid">
         <motion.div
           className="sticker"
           initial={{ rotate: -6, y: 80, opacity: 0 }}
-          animate={{ rotate: -1.5, y: 0, opacity: 1 }}
+          whileInView={{ rotate: -1.5, y: 0, opacity: 1 }}
+          viewport={inView}
           transition={{ type: 'spring', stiffness: 120, damping: 14, delay: 0.15 }}
           whileHover={{ rotate: 0, scale: 1.01 }}
         >
@@ -46,7 +47,8 @@ export function Spec() {
                 <motion.tr
                   key={k}
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={inView}
                   transition={{ delay: 0.3 + i * 0.05 }}
                 >
                   <td className="mono">{k}</td>
@@ -85,7 +87,8 @@ export function Spec() {
         <motion.div
           className="spec-bio"
           initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={{ delay: 0.35, duration: 0.6 }}
         >
           <p className="big">
@@ -100,10 +103,11 @@ export function Spec() {
             learn more from that than from anything that worked.
           </p>
           <p className="muted">
-            i joke around too much and get distracted easily. that's why this website has a gear shifter.
+            i joke around too much and get distracted easily. if you hang around here long enough, you'll see what i
+            mean.
           </p>
         </motion.div>
       </div>
-    </div>
+    </Section>
   )
 }

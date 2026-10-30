@@ -1,20 +1,17 @@
 # rjbuilds
 
-personal site for rj o'malley. cars, code, and business.
+personal site for rj o'malley. cars, code, business, music, and movies.
 
-the site boots like a terminal, turns the key, sweeps the tach to redline, and then you drive it with an h-pattern gear shifter.
+one scrolling page. it boots with a tach sweep to redline, and the nav has a little gearbox: every section you scroll into shifts up a gear, and the shift lights fill as you go.
 
-| gear | section |
-| --- | --- |
-| n | home |
-| 1 | spec sheet (about, as a window sticker) |
-| 2 | the garage (builds) |
-| 3 | pit wall (business, as live timing) |
-| 4 | the dyno (questionable stats) |
-| 5 | pit radio (contact) |
-| r | reverse (changelog, through a backup camera) |
+- **about**: a car window sticker
+- **builds**: projects as build sheets
+- **business**: ventures as an f1 live timing tower
+- **music**: a turntable + record crate with 30s apple music previews
+- **movies**: a crt tv + vhs shelf of favorite movie scenes (youtube)
+- **contact**: pit radio
 
-controls: drag the shifter, press `1`–`5`, `r`, `n`, or the arrow keys. press `` ` `` for the terminal. sit still too long and rj gets distracted.
+sit still and rj gets distracted (fun-fact popups). press `` ` `` for a secret terminal.
 
 ## run it
 
@@ -25,8 +22,11 @@ npm run dev
 
 ## edit content
 
-all copy lives in `src/data.ts`: builds, ventures, changelog, spec sheet, and the distraction facts.
+all copy lives in `src/data.ts`.
+
+- songs: itunes track ids. find one with `https://itunes.apple.com/search?term=artist+song&entity=song&limit=1`
+- movies: youtube video ids (the part after `watch?v=`)
 
 ## deploy
 
-pushes to `main` build and deploy to github pages via `.github/workflows/deploy.yml`. the vite `base` is relative, so the same build works on a custom domain later.
+pushes to `main` build and deploy to github pages via `.github/workflows/deploy.yml`.
