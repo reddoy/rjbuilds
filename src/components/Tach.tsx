@@ -63,7 +63,7 @@ export function Tach({ size = 120, labels = true }: { size?: number; labels?: bo
     <div className="tach" style={{ width: size, height: size }}>
       <motion.div className="tach-glow" style={{ opacity: glow }} />
       <svg viewBox="0 0 200 200" width={size} height={size} aria-hidden>
-        <circle cx="100" cy="100" r="96" fill="#0a0a09" stroke="#2a2925" strokeWidth="2" />
+        <circle cx="100" cy="100" r="96" fill="var(--ink)" stroke="var(--line)" strokeWidth="2" />
         <path d={arc(88, toDeg(REDLINE), toDeg(MAX_RPM))} stroke="var(--red)" strokeWidth="7" fill="none" />
         {ticks}
         {labels && (
@@ -74,7 +74,7 @@ export function Tach({ size = 120, labels = true }: { size?: number; labels?: bo
         <motion.g style={{ rotate, originX: '100px', originY: '100px' }}>
           <line x1="100" y1="112" x2="100" y2="26" stroke="var(--red)" strokeWidth="4" strokeLinecap="round" />
         </motion.g>
-        <circle cx="100" cy="100" r="9" fill="#1b1a17" stroke="var(--red)" strokeWidth="2" />
+        <circle cx="100" cy="100" r="9" fill="var(--ink-3)" stroke="var(--red)" strokeWidth="2" />
       </svg>
       {labels && <motion.div className="tach-readout mono">{readout}</motion.div>}
     </div>

@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'motion/react'
 import { useEffect } from 'react'
 
-const WORDS = ['cars', 'code', 'business', 'movies', 'music', 'got distracted', 'side projects', '2am ideas']
+const WORDS = ['computers', 'cars', 'building apps', 'marketing']
 
 function Letter({ ch, i, mx, my }: { ch: string; i: number; mx: MotionValue<number>; my: MotionValue<number> }) {
   const skewX = useTransform(mx, [-1, 1], [i ? -12 : 12, i ? 8 : -8])
@@ -59,11 +59,10 @@ export function Hero() {
             transition={{ delay: 0.55, duration: 0.6 }}
           >
             <p className="who">
-              <s>rohan</s> rj o'malley
+              hey, i'm rj.
             </p>
             <p className="tag">
-              i build software, obsess over cars, and start businesses.{' '}
-              <span className="muted">sometimes in that order.</span>
+              i love computers and cars. i build apps and work on marketing.
             </p>
             <div className="hero-ctas">
               <a className="btn" href="#builds">

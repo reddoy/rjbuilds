@@ -8,7 +8,7 @@ import { Section, SectionHead, inView } from './SectionHead'
 function labelText(hex: string) {
   const n = parseInt(hex.slice(1), 16)
   const lum = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255
-  return lum > 0.5 ? '#0d0d0c' : '#f2ede4'
+  return lum > 0.5 ? '#0a0a0b' : '#e3e4e7'
 }
 
 export function Movies() {

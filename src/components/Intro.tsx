@@ -1,92 +1,59 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
-import { sweep } from '../lib/engine'
-import { Tach } from './Tach'
-
-type Phase = 'ignite' | 'slam' | 'split'
+import { motion } from 'motion/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export function Intro({ onReveal, onDone }: { onReveal: () => void; onDone: () => void }) {
-  const [phase, setPhase] = useState<Phase>('ignite')
-  const [shake, setShake] = useState(false)
+  const [typed, setTyped] = useState(0)
+  const [phase, setPhase] = useState<'type' | 'build' | 'ready' | 'reveal'>('type')
   const done = useRef(false)
-
-  const finish = () => {
+  const finish = useCallback(() => {
     if (done.current) return
     done.current = true
     onReveal()
     onDone()
-  }
+  }, [onReveal, onDone])
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) finish()
-  }, [])
-
-  useEffect(() => {
-    let t: number
-    if (phase === 'ignite') {
-      sweep(() => {
-        setShake(true)
-        window.setTimeout(() => setShake(false), 380)
-      })
-      t = window.setTimeout(() => setPhase('slam'), 1250)
-    } else if (phase === 'slam') {
-      t = window.setTimeout(() => setPhase('split'), 650)
-    } else {
-      onReveal()
-      t = window.setTimeout(finish, 850)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finish()
+      return
     }
-    return () => window.clearTimeout(t)
-  }, [phase])
+    const timers = [
+      ...Array.from({ length: 5 }, (_, i) => window.setTimeout(() => setTyped(i + 1), 230 + i * 115)),
+      window.setTimeout(() => setPhase('build'), 950),
+      window.setTimeout(() => setPhase('ready'), 2050),
+      window.setTimeout(() => { setPhase('reveal'); onReveal() }, 2600),
+      window.setTimeout(finish, 3250),
+    ]
+    return () => timers.forEach(window.clearTimeout)
+  }, [finish, onReveal])
 
   return (
-    <div className={`intro ${shake ? 'shake' : ''}`} onClick={finish}>
-      <motion.div
-        className="intro-half top"
-        animate={phase === 'split' ? { y: '-101%' } : { y: 0 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      />
-      <motion.div
-        className="intro-half bottom"
-        animate={phase === 'split' ? { y: '101%' } : { y: 0 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      />
-
-      <AnimatePresence>
-        {phase === 'ignite' && (
-          <motion.div
-            key="tach"
-            className="intro-tach"
-            initial={{ opacity: 0, scale: 0.75 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 2.4, filter: 'blur(20px)' }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          >
-            <Tach size={Math.min(380, window.innerWidth * 0.75)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {phase !== 'ignite' && (
-          <motion.div
-            key="slam"
-            className="intro-slam"
-            initial={{ scale: 5, opacity: 0, filter: 'blur(30px)' }}
-            animate={
-              phase === 'split'
-                ? { scale: 0.6, opacity: 0, filter: 'blur(10px)' }
-                : { scale: 1, opacity: 1, filter: 'blur(0px)' }
-            }
-            transition={{ duration: phase === 'split' ? 0.45 : 0.4, ease: [0.2, 0.9, 0.1, 1] }}
-          >
-            rj<span className="red">.</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {phase === 'slam' && <div className="flash" />}
-
-      {phase !== 'split' && <span className="skip mono">click to skip</span>}
-    </div>
+    <motion.div className={`intro workshop-intro phase-${phase}`} role="dialog" aria-label="itsrjbuilds introduction"
+      animate={{ opacity: phase === 'reveal' ? 0 : 1, y: phase === 'reveal' ? '-5%' : 0 }}
+      transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}>
+      <div className="intro-grid" aria-hidden="true" />
+      <div className="intro-corner mono" aria-hidden="true">rj / personal workshop</div>
+      <div className="intro-assembly">
+        <div className="intro-dimension mono" aria-hidden="true"><span>idea</span><i /><span>made real</span></div>
+        <div className="intro-wordmark" aria-label="itsrjbuilds">
+          <span className="intro-code mono" aria-hidden="true"><span className="code-prompt">&gt;</span>{'itsrj'.slice(0, typed)}<i className="type-cursor" /></span>
+          <span className="intro-metal" aria-hidden="true">
+            <span className="metal-outline">builds</span>
+            {'builds'.split('').map((letter, i) => (
+              <motion.span className="metal-letter" key={i}
+                initial={{ y: i % 2 ? 95 : -95, x: (i - 2.5) * 12, rotate: i % 2 ? 12 : -12, opacity: 0 }}
+                animate={phase !== 'type' ? { y: 0, x: 0, rotate: 0, opacity: 1 } : {}}
+                transition={{ delay: i * 0.085, type: 'spring', stiffness: 230, damping: 21 }}>
+                {letter}
+              </motion.span>
+            ))}
+          </span>
+          <span className="logo-stop" aria-hidden="true">.</span>
+        </div>
+        <div className="intro-baseline" aria-hidden="true"><span /></div>
+        <div className="intro-status mono" aria-hidden="true"><span>{phase === 'type' ? '01 / writing the idea' : phase === 'build' ? '02 / putting it together' : '03 / ready to explore'}</span><span>{phase === 'ready' || phase === 'reveal' ? 'complete ↗' : 'work in progress'}</span></div>
+      </div>
+      <button className="skip mono" onClick={finish}>skip intro ↗</button>
+    </motion.div>
   )
 }

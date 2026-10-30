@@ -7,11 +7,10 @@ function BuildCard({ b, i }: { b: Build; i: number }) {
   const py = useMotionValue(0)
   const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 18 })
   const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 18 })
-  const blown = b.status === 'blown engine'
 
   return (
     <motion.article
-      className={`build ${blown ? 'blown' : ''}`}
+      className="build"
       initial={{ opacity: 0, y: 60, rotate: i % 2 ? 3 : -3 }}
       whileInView={{ opacity: 1, y: 0, rotate: 0 }}
       viewport={inView}
@@ -27,28 +26,27 @@ function BuildCard({ b, i }: { b: Build; i: number }) {
         py.set(0)
       }}
     >
-      {blown && <div className="hazard build-hazard" />}
       <div className="build-top mono">
-        <span>chassis no. {String(i + 1).padStart(3, '0')}</span>
+        <span>project {String(i + 1).padStart(3, '0')}</span>
         <span className={`status s-${b.status.replace(/\s/g, '-')}`}>{b.status}</span>
       </div>
       <h3>{b.name}</h3>
       <p>{b.line}</p>
       <div className="build-engine mono">
-        <span className="muted">engine</span> {b.engine}
+        <span className="muted">stack</span> {b.engine}
       </div>
       <div className="build-actions">
         {b.drive && (
           <a className="chip mono on" href={b.drive} target="_blank" rel="noreferrer">
-            drive it ↗
+            view project ↗
           </a>
         )}
         {b.hood && (
           <a className="chip mono" href={b.hood} target="_blank" rel="noreferrer">
-            pop the hood
+            source code ↗
           </a>
         )}
-        {!b.drive && !b.hood && <span className="chip mono ghost">private build, no test drives</span>}
+        {!b.drive && !b.hood && <span className="chip mono ghost">private project</span>}
       </div>
     </motion.article>
   )
@@ -57,7 +55,7 @@ function BuildCard({ b, i }: { b: Build; i: number }) {
 export function Builds() {
   return (
     <Section id="builds">
-      <SectionHead gear="2" title="builds" sub={`${BUILDS.length} builds. 1 blown engine. zero regrets (several regrets).`} />
+      <SectionHead gear="2" title="builds" sub="apps and projects i’ve built." />
       <div className="build-grid">
         {BUILDS.map((b, i) => (
           <BuildCard key={b.name} b={b} i={i} />

@@ -1,19 +1,19 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { DISTRACTIONS } from '../data'
+import { FUN_FACTS } from '../data'
 
 const IDLE_MS = 11000
 const COOLDOWN_MS = 25000
 const SHOW_MS = 9000
 
-export function useDistractions(enabled: boolean) {
+export function useFunFacts(enabled: boolean) {
   const [current, setCurrent] = useState<string | null>(null)
   const [count, setCount] = useState(0)
   const deck = useRef<string[]>([])
   const lastShown = useRef(0)
 
   const trigger = () => {
-    if (deck.current.length === 0) deck.current = [...DISTRACTIONS].sort(() => Math.random() - 0.5)
+    if (deck.current.length === 0) deck.current = [...FUN_FACTS].sort(() => Math.random() - 0.5)
     lastShown.current = Date.now()
     setCurrent(deck.current.pop()!)
     setCount((c) => c + 1)
@@ -47,25 +47,25 @@ export function useDistractions(enabled: boolean) {
   return { current, count, trigger, dismiss: () => setCurrent(null) }
 }
 
-export function Distraction({ text, onDismiss }: { text: string | null; onDismiss: () => void }) {
+export function FunFact({ text, onDismiss }: { text: string | null; onDismiss: () => void }) {
   return (
     <AnimatePresence>
       {text && (
         <motion.aside
           key={text}
           className="distraction"
-          initial={{ x: 420, rotate: 8, opacity: 0 }}
-          animate={{ x: 0, rotate: -2, opacity: 1 }}
-          exit={{ x: 420, rotate: 12, opacity: 0 }}
+          initial={{ x: 40, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 40, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20 }}
           role="status"
         >
           <div className="distraction-head mono">
-            <span className="squirrel-dot" /> sorry, got distracted
+            fun fact
           </div>
           <p>{text}</p>
           <button className="chip mono on" onClick={onDismiss}>
-            ok focus, rj
+            dismiss
           </button>
         </motion.aside>
       )}

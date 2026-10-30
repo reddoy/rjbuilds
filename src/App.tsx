@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'motion/react'
 import { useCallback, useEffect, useState } from 'react'
-import { Distraction, useDistractions } from './components/Distraction'
+import { FunFact, useFunFacts } from './components/Distraction'
 import { Intro } from './components/Intro'
 import { Nav } from './components/Nav'
 import { Terminal } from './components/Terminal'
@@ -41,7 +41,7 @@ export default function App() {
   const [booted, setBooted] = useState(false)
   const [terminal, setTerminal] = useState(false)
   const active = useActiveSection(revealed)
-  const distractions = useDistractions(booted && !terminal)
+  const facts = useFunFacts(booted && !terminal)
 
   useEffect(() => {
     if (!revealed) return
@@ -95,7 +95,7 @@ export default function App() {
       <footer className="footer">
         <div className="container footer-inner mono">
           <span>
-            built by rj<span className="red">.</span> typed in lowercase on purpose.
+            built by rj<span className="red">.</span>
           </span>
           <span className="footer-links">
             <a href={CONTACT.github} target="_blank" rel="noreferrer">
@@ -107,10 +107,10 @@ export default function App() {
         </div>
       </footer>
 
-      <Distraction text={distractions.current} onDismiss={distractions.dismiss} />
+      <FunFact text={facts.current} onDismiss={facts.dismiss} />
 
       <AnimatePresence>
-        {terminal && <Terminal onClose={() => setTerminal(false)} onDistract={distractions.trigger} />}
+        {terminal && <Terminal onClose={() => setTerminal(false)} onFact={facts.trigger} />}
       </AnimatePresence>
 
       {!booted && <Intro onReveal={onReveal} onDone={onBooted} />}

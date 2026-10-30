@@ -1,17 +1,8 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { BUILDS, CONTACT, MOVIES, SECTIONS, SONGS } from '../data'
-import { blip, isSoundOn, setSound } from '../lib/engine'
 
 type Line = { kind: 'in' | 'out' | 'err'; text: ReactNode }
-
-const JOKES = [
-  'why did the developer buy a manual? because automatic deploys kept breaking.',
-  "my code is like my project car: it runs, nobody knows why, don't touch it.",
-  'there are 10 types of people: those who understand binary and those who drive automatics.',
-  "i'm not procrastinating, i'm letting the idea warm up like an old v8.",
-  'my startup has the same burn rate as a 1970s muscle car.',
-]
 
 const HELP = [
   'help            this',
@@ -21,11 +12,7 @@ const HELP = [
   'music           on rotation',
   'whoami          who is this',
   'builds          what i made',
-  'vroom           toggle engine sound',
-  'rev             blip the throttle',
-  'distract        get distracted on purpose',
-  'joke            dad joke, car flavored',
-  'sudo hire rj    ...',
+  'fact            a fact about cars or computers',
   'clear / exit',
 ]
 
@@ -33,9 +20,9 @@ function goTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
-export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistract: () => void }) {
+export function Terminal({ onClose, onFact }: { onClose: () => void; onFact: () => void }) {
   const [lines, setLines] = useState<Line[]>([
-    { kind: 'out', text: 'rjOS garage shell v9.0 — type "help". esc to close.' },
+    { kind: 'out', text: 'rj terminal — type "help". esc to close.' },
   ])
   const [value, setValue] = useState('')
   const [history, setHistory] = useState<string[]>([])
@@ -81,8 +68,8 @@ export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistr
         break
       }
       case 'whoami':
-        say("rj o'malley. legally rohan. spiritually rj.")
-        say('likes: cars, programming, business. dislikes: finishing one thing before starting another.')
+        say("i’m rj.")
+        say('computers, cars, building apps, and marketing.')
         break
       case 'builds':
         BUILDS.forEach((b) => say(`- ${b.name.padEnd(22)} ${b.status}`))
@@ -93,29 +80,18 @@ export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistr
       case 'music':
         SONGS.forEach((m) => say(`- ${m.title} — ${m.artist}`))
         break
-      case 'vroom':
-        setSound(!isSoundOn())
-        say(isSoundOn() ? 'engine noise: on. vroom.' : 'engine noise: off. stealth mode.')
-        break
-      case 'rev':
-        blip(7200)
-        say('BRAAAP.')
-        break
-      case 'distract':
-        onDistract()
-        say('oh look, a squirrel.')
-        break
-      case 'joke':
-        say(JOKES[Math.floor(Math.random() * JOKES.length)])
-        break
+      case 'fact':
+        onFact()
+        onClose()
+        return
       case 'sudo':
         if (arg.startsWith('hire')) {
           say('permission granted. opening your email client...')
-          window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent('hiring rj (via the terminal, obviously)')}`
+          window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent('hello rj')}`
         } else say('nice try.', 'err')
         break
       case 'rm':
-        say('absolutely not. this is a garage, not a demolition derby.', 'err')
+        say('this terminal does not support file changes.', 'err')
         break
       case 'github':
         window.open(CONTACT.github, '_blank')
@@ -130,7 +106,7 @@ export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistr
         setHistory((h) => [cmd, ...h])
         return
       default:
-        say(`command not found: ${head}. did you mean "vroom"?`, 'err')
+        say(`command not found: ${head}. type "help" for commands.`, 'err')
     }
     setLines((l) => [...l, ...out])
     if (cmd) setHistory((h) => [cmd, ...h])
@@ -175,17 +151,17 @@ export function Terminal({ onClose, onDistract }: { onClose: () => void; onDistr
           <span className="dot r" onClick={onClose} />
           <span className="dot y" />
           <span className="dot g" />
-          <span className="term-title">rj@garage: ~</span>
+          <span className="term-title">rj@site: ~</span>
         </div>
         <div className="term-body" ref={scroller}>
           {lines.map((l, i) => (
             <div key={i} className={`term-line ${l.kind}`}>
-              {l.kind === 'in' && <span className="prompt-sym">rj@garage ~ $ </span>}
+              {l.kind === 'in' && <span className="prompt-sym">rj@site ~ $ </span>}
               {l.text}
             </div>
           ))}
           <div className="term-line in">
-            <span className="prompt-sym">rj@garage ~ $ </span>
+            <span className="prompt-sym">rj@site ~ $ </span>
             <input
               ref={input}
               value={value}

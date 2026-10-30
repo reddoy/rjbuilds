@@ -25,13 +25,13 @@ export function Contact() {
 
   const transmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const subject = encodeURIComponent('pit radio: message for rj')
+    const subject = encodeURIComponent('message for rj')
     window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${encodeURIComponent(msg)}`
   }
 
   return (
     <Section id="contact">
-      <SectionHead gear="6" title="contact" sub="pit radio. box, box. let's talk: projects, cars, ideas, whatever." />
+      <SectionHead gear="6" title="contact" sub="have a project in mind? get in touch." />
 
       <div className="wave" aria-hidden>
         {bars.map((b, i) => (
@@ -46,8 +46,8 @@ export function Contact() {
       <div className="radio-grid">
         <div className="radio-links">
           <button className="radio-email" onClick={copy}>
-            <span className="mono radio-k">{copied ? 'copied. radio check ✓' : 'email (click to copy)'}</span>
-            <span className="radio-v">{CONTACT.email}</span>
+            <span className="mono radio-k">{copied ? 'email copied ✓' : 'email (click to copy)'}</span>
+            <span className="radio-v">email rj ↗</span>
           </button>
           <a className="radio-email" href={CONTACT.github} target="_blank" rel="noreferrer">
             <span className="mono radio-k">github ↗</span>
@@ -57,17 +57,17 @@ export function Contact() {
 
         <form className="radio-form" onSubmit={transmit}>
           <label className="mono radio-k" htmlFor="radio-msg">
-            your message to the pit wall
+            your message
           </label>
           <textarea
             id="radio-msg"
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
-            placeholder="rj, we need you to build..."
+            placeholder="what are you working on?"
             rows={5}
           />
           <button className="transmit mono" type="submit" disabled={!msg.trim()}>
-            ● transmit
+            open email ↗
           </button>
         </form>
       </div>
